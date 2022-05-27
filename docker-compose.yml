@@ -1,6 +1,7 @@
 version: '3'
 services:
   browser:
+    container_name: selenium1 # rename whatever you want...but it must match selenium_hostname on line 1 of env.rb
     # See inside via VNC with the "debug" version
     image: selenium/standalone-chrome-debug
     
@@ -12,8 +13,14 @@ services:
       - "4444:4444" #for webdriver access
 
   ruby:
+    container_name: ruby1 # rename whatever you want
+    image: ruby1 # rename whatever you want
     build: .
     volumes:
       - .:/app
     depends_on: 
       - browser
+      
+networks:
+  default:
+    name: test1 # rename whatever you want
