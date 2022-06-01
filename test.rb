@@ -1,8 +1,12 @@
 require 'capybara'
 require 'selenium-webdriver'
-selenium_hostname = 'selenium1'
-remote_url        = "#{selenium_hostname}:4444/wd/hub"
 require 'rainbow'
+in_container = %x(echo `[ ! -f /.dockerenv ]` $?).to_i == 1
+selenium_server = in_container ? 'selenium1' : '0.0.0.0'
+remote_url = URI::Generic.new('http', nil, selenium_server, 4444, nil, '/wd/hub', nil, nil, nil)
+
+puts Rainbow(remote_url.to_s).cyan
+
 
 # Done for demo purposes here!
 Capybara.server = :puma, { Silent: true }

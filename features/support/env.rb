@@ -1,17 +1,14 @@
-selenium_server = 'selenium1'
-# selenium_hostname = 'selenium1'
-# remote_url        = URI.encode("#{selenium_hostname}:4444/wd/hub")
-remote_url = URI::Generic.new('http', nil, selenium_server, 4444, nil, '/wd/hub', nil, nil, nil)
-
 require 'rspec' #for page.shoud etc
 require 'capybara/cucumber'
 require 'capybara-screenshot/cucumber'
 require 'selenium-webdriver'
 require 'webdrivers'
 require 'pry'
+require 'rainbow'
 
-#if you're accessing an internal app behind a firewall, you may not need the proxy. You can unset it like so:
-#ENV['HTTP_PROXY'] = ENV['http_proxy'] = nil
+in_container = %x(echo `[ ! -f /.dockerenv ]` $?).to_i == 1
+selenium_server = in_container ? 'selenium1' : '0.0.0.0'
+remote_url = URI::Generic.new('http', nil, selenium_server, 4444, nil, '/wd/hub', nil, nil, nil)
 
 Capybara.register_driver :remote_chrome do |app|
   client = Selenium::WebDriver::Remote::Http::Default.new

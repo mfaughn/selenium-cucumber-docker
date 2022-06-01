@@ -1,23 +1,13 @@
 require 'rainbow'
 require 'capybara'
 require 'selenium-webdriver'
+require 'rainbow'
 in_container = %x(echo `[ ! -f /.dockerenv ]` $?).to_i == 1
-
 selenium_server = in_container ? 'selenium1' : '0.0.0.0'
 remote_url = URI::Generic.new('http', nil, selenium_server, 4444, nil, '/wd/hub', nil, nil, nil)
 
-puts Rainbow(remote_url.to_s).cyan
-
 # Done for demo purposes here!
 Capybara.server = :puma, { Silent: true }
-
-# # docker_ip = %x(/sbin/ip route).strip
-# docker_ip  = %x(/sbin/ip route|awk '/default/ { print $3 }').strip.succ
-# puts Rainbow(docker_ip.inspect).orange
-#
-# # docker_ip  = %x(/sbin/ip route|awk '/default/ { print $3 }').strip
-# remote_url = "http://#{docker_ip}:4444/wd/hub"
-# puts Rainbow(remote_url.inspect).orange
 
 Capybara.register_driver :remote_chrome do |app|
   client = Selenium::WebDriver::Remote::Http::Default.new
