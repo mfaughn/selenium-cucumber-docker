@@ -1,5 +1,8 @@
-selenium_hostname = 'selenium1'
-remote_url        = "#{selenium_hostname}:4444/wd/hub"
+selenium_server = 'selenium1'
+# selenium_hostname = 'selenium1'
+# remote_url        = URI.encode("#{selenium_hostname}:4444/wd/hub")
+remote_url = URI::Generic.new('http', nil, selenium_server, 4444, nil, '/wd/hub', nil, nil, nil)
+
 require 'rspec' #for page.shoud etc
 require 'capybara/cucumber'
 require 'capybara-screenshot/cucumber'
@@ -20,7 +23,7 @@ Capybara.register_driver :remote_chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :remote, http_client: client, url: remote_url, options: options)
 end
 
-
+=begin
 Capybara.register_driver :remote_chrome do |app|
   
   
@@ -40,6 +43,7 @@ Capybara.register_driver :remote_chrome do |app|
   :capabilities => options,
   :url => "#{selenium_hostname}:4444/wd/hub")
 end
+=end
 
 Capybara::Screenshot.register_driver(:remote_chrome) do |driver, path|
   driver.browser.save_screenshot(path)
