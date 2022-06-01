@@ -1,5 +1,5 @@
 selenium_hostname = 'selenium1'
-remote_url        = "#{selenium_hostname}:4444/wd/hub")
+remote_url        = "#{selenium_hostname}:4444/wd/hub"
 require 'rspec' #for page.shoud etc
 require 'capybara/cucumber'
 require 'capybara-screenshot/cucumber'
